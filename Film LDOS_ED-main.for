@@ -133,7 +133,7 @@ c	w=17.47d15*1.d-2*m
 			endif
 
 *----Calculation of the general transmission coefficient. Output = TeTE and TeTM 
-			call multilayer_nanorad(w,kx,TeTE,TeTM) 
+			call multilayer_nanorad(w,k_nu,kx,TeTE,TeTM) 
 
 *----Integration over all kx (define a function that we evaluate) by Simpson method
 			dfunct(l)=(TeTE+TeTM)*kx
@@ -177,7 +177,7 @@ c		kxb=(j*(w/c0))/(30000.d0)
 			endif
 
 *----Calculation of the general transmission coefficient of energy. Output = TeTE and TeTM 
-			call multilayer_nanorad(w,kx,TeTE,TeTM)
+			call multilayer_nanorad(w,k_nu,kx,TeTE,TeTM)
 
 *----Integration over all kx (define a function that we evaluate) by Simpson method
 
@@ -226,7 +226,7 @@ c		kxb=((6.d0*w)/c0)+(j*(w/c0))/(200.0d0)
 			endif
 
 *----Calculation of the general transmission coefficient. Output = TeTE and TeTM 
-			call multilayer_nanorad(w,kx,TeTE,TeTM)
+			call multilayer_nanorad(w,k_nu,kx,TeTE,TeTM)
 
 *----Integration over all kx (define a function that we evaluate) by Simpson method
 			dfunctev(l)=(TeTE+TeTM)*kx

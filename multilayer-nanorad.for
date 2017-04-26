@@ -1,4 +1,4 @@
-	subroutine multilayer_nanorad(w,kx,TeTE,TeTM)
+	subroutine multilayer_nanorad(w,k_nu,kx,TeTE,TeTM)
 
 *----Declaration of variables
 *    nm=maximum number of layers
@@ -18,7 +18,7 @@
 	complex*16 diel(0:nm-1)
 *    dt(0,nm) is the thickness of a layer; zint is the location of an interface (see figure in dissertation)  
 	double precision dt(0:nm),zint(0:nm)
-	double precision kx,k0,w,c0,pi
+	double precision kx,k0,w,c0,pi,k_nu
 *    im is the complex constant
 	complex*16 im
 *    Transmitted energy in TM and TE polarizations
@@ -460,21 +460,21 @@
 	RTM3=(rfTM(3,4)+rfTM(4,5)*cdexp(2.d0*im*kz(4)*dt(4)))
      &/(1.d0+rfTM(3,4)*rfTM(4,5)*cdexp(2.d0*im*kz(4)*dt(4)))
 
-!	termTM=(cdabs(1.d0+RTM3*cdexp(2.d0*im*kz(2)*dt(3)))**2.d0)
-!     &-(2.d0*kz(2)**2.d0)
-!     &*dreal(RTM3*cdexp(2.d0*im*kz(2)*dt(3)))/(k_nu**2.d0)
+	termTM=(cdabs(1.d0+RTM3*cdexp(2.d0*im*kz(2)*dt(3)))**2.d0)
+     &-(2.d0*kz(2)**2.d0)
+     &*dreal(RTM3*cdexp(2.d0*im*kz(2)*dt(3)))/(k_nu**2.d0)
 
-!	TeTM=(((1.d0/(4.d0*(pi**2.d0)*w))*(k_nu**2.d0))*(1.d0/cdabs(kz(2)))
-!     &*termTM*(1.d0-cdabs(RTM1)**2-cdabs(TTM1)**2))
-!     &/(cdabs(1.d0-RTM1*RTM3*cdexp(2.d0*im*kz(2)*(dt(2)+dt(3))))**2.d0)
-
-      termTM=kx**2.d0*(cdabs(1.d0+RTM3*cdexp(2.d0*im*kz(2)*dt(3)))**2.d0
-     &)+(kz(2)**2.d0)
-     &*(1+cdabs(RTM3)**2)
-	
-	TeTM=(((1.d0/(4.d0*(pi**2.d0)*w))*(1.d0/cdabs(kz(2)))
+	TeTM=(((1.d0/(4.d0*(pi**2.d0)*w))*(k_nu**2.d0))*(1.d0/cdabs(kz(2)))
      &*termTM*(1.d0-cdabs(RTM1)**2-cdabs(TTM1)**2))
-     &/(cdabs(1.d0-RTM1*RTM3*cdexp(2.d0*im*kz(2)*(dt(2)+dt(3))))**2.d0))
+     &/(cdabs(1.d0-RTM1*RTM3*cdexp(2.d0*im*kz(2)*(dt(2)+dt(3))))**2.d0)
+
+!      termTM=kx**2.d0*(cdabs(1.d0+RTM3*cdexp(2.d0*im*kz(2)*dt(3)))**2.d0
+!     &)+(kz(2)**2.d0)
+!     &*(1+cdabs(RTM3)**2)
+	
+!	TeTM=(((1.d0/(4.d0*(pi**2.d0)*w))*(1.d0/cdabs(kz(2)))
+!     &*termTM*(1.d0-cdabs(RTM1)**2-cdabs(TTM1)**2))
+!     &/(cdabs(1.d0-RTM1*RTM3*cdexp(2.d0*im*kz(2)*(dt(2)+dt(3))))**2.d0))
 
 	
 	
