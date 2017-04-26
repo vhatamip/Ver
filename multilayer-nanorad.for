@@ -414,7 +414,7 @@
 
 1	continue
 	write(6,*) 'k_rho=',kx	
-	write(6,*) '1-Num-TE=',TeTE	
+	write(6,*) '1-Num-TE=',TeTM	
 
 *----Analytical expression of Drevillon et al. for a single emitting film
 !MF	RTE=(rfTE(0,1)+rfTE(1,2)*cdexp(2.d0*im*kz(1)*(zint(2)-zint(1))))
@@ -433,22 +433,22 @@
 !----Analytical formulation when looking at distance z above film 1 in cavity (see p. 47 of notes)
 !    The equation below is correct, and give the exact same result than when solving the problem
 !    with the pure numerical approach.
-	RTE1=(rfTE(0,1)+rfTE(1,2)*cdexp(2.d0*im*kz(1)*dt(1)))
-     &/(1.d0+rfTE(0,1)*rfTE(1,2)*cdexp(2.d0*im*kz(1)*dt(1)))
+	RTM1=(rfTM(0,1)+rfTM(1,2)*cdexp(2.d0*im*kz(1)*dt(1)))
+     &/(1.d0+rfTM(0,1)*rfTM(1,2)*cdexp(2.d0*im*kz(1)*dt(1)))
 
-	RTE3=(rfTE(3,4)+rfTE(4,5)*cdexp(2.d0*im*kz(4)*dt(4)))
-     &/(1.d0+rfTE(3,4)*rfTE(4,5)*cdexp(2.d0*im*kz(4)*dt(4)))
+	RTM3=(rfTM(3,4)+rfTM(4,5)*cdexp(2.d0*im*kz(4)*dt(4)))
+     &/(1.d0+rfTM(3,4)*rfTM(4,5)*cdexp(2.d0*im*kz(4)*dt(4)))
 
-	termTE=(cdabs(1.d0+RTE3*dexp(-2.d0*dimag(kz(2))*dt(3)))**2.d0)
+	termTM=(cdabs(1.d0+RTM3*dexp(-2.d0*dimag(kz(2))*dt(3)))**2.d0)
      &-(2.d0*(cdabs(kz(2))**2.d0)
-     &*dreal(RTE3)*(dexp(-2.d0*dimag(kz(2))*dt(3))))/(kx**2.d0)
+     &*dreal(RTM3)*(dexp(-2.d0*dimag(kz(2))*dt(3))))/(kx**2.d0)
 
-	TeTE=(((1.d0/(2.d0*(pi**2.d0)*w))*(kx**2.d0))*(1.d0/cdabs(kz(2)))
-     &*dimag(RTE1)*termTE*dexp(-2.d0*dimag(kz(2))*dt(2)))
-     &/(cdabs(1.d0-RTE1*RTE3*cdexp(2.d0*im*kz(2)*(dt(2)+dt(3))))**2.d0)
+	TeTM=(((1.d0/(2.d0*(pi**2.d0)*w))*(kx**2.d0))*(1.d0/cdabs(kz(2)))
+     &*dimag(RTM1)*termTM*dexp(-2.d0*dimag(kz(2))*dt(2)))
+     &/(cdabs(1.d0-RTM1*RTM3*cdexp(2.d0*im*kz(2)*(dt(2)+dt(3))))**2.d0)
 
 	 
-	write(6,*) '2-Ana-TE=',TeTE
+	write(6,*) '2-Ana-TM=',TeTM
 
 	!stop
 
