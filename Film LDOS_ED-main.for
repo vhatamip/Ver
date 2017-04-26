@@ -43,7 +43,7 @@
      &				 ldos_evanTM(0:mm),ldos_evanTE(0:mm)
 *    kx is the x-component of the wavevector (same in all layers); kxa and kxb are defined for calculation of the integrals
 *    using Simpson's method	
-	double precision kx,kxa,kxb	
+	double precision kx,kxa,kxb,k_rho	
 *    dfunct, dfunctev are used to perform the integration over kx with Simpson's method
 	double precision dfunct(jm),dfunctev(jm),dfunctTM(jm),dfunctTE(jm)
 *    General transmission coefficients of energy (TE and TM modes) calculated with the subroutine (T-matrix method)
@@ -107,7 +107,7 @@ c	w=50.d12+((m-1)*weight)
 c	weight=0.5d12
 c	do 1 m=1,81
 	w=150.d12+((m-1)*weight)
-
+      k_rho=w/c0
 cccccFrequencies for validation of Drevillon et al. (Al film)
 c	weight=4.d12
 c	do 1 m=1,120
@@ -121,7 +121,7 @@ c	w=17.47d15*1.d-2*m
 !c	do 2 j=1,1
 		kxa=(j-1.d0)*((w/c0)/2000.d0)
 		kxb=j*((w/c0)/2000.d0)
-
+          
 *    Loop to perform the integration by Simpson's method
 		do 3 l=1,3
 			if (l.eq.1) then

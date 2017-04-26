@@ -413,7 +413,7 @@
      &	+((zsb-zsa)/6.d0)*(funcTM(1)+4.d0*funcTM(2)+funcTM(3))
 
 1	continue
-	
+	write(6,*) 'k_rho=',kx	
 	write(6,*) '1-Num-TE=',TeTE	
 
 *----Analytical expression of Drevillon et al. for a single emitting film
