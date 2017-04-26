@@ -43,7 +43,7 @@
      &				 ldos_evanTM(0:mm),ldos_evanTE(0:mm)
 *    kx is the x-component of the wavevector (same in all layers); kxa and kxb are defined for calculation of the integrals
 *    using Simpson's method	
-	double precision kx,kxa,kxb,k_rho	
+	double precision kx,kxa,kxb,k_nu	
 *    dfunct, dfunctev are used to perform the integration over kx with Simpson's method
 	double precision dfunct(jm),dfunctev(jm),dfunctTM(jm),dfunctTE(jm)
 *    General transmission coefficients of energy (TE and TM modes) calculated with the subroutine (T-matrix method)
@@ -107,7 +107,7 @@ c	w=50.d12+((m-1)*weight)
 c	weight=0.5d12
 c	do 1 m=1,81
 	w=150.d12+((m-1)*weight)
-      k_rho=w/c0
+      k_nu=w/c0
 cccccFrequencies for validation of Drevillon et al. (Al film)
 c	weight=4.d12
 c	do 1 m=1,120
@@ -151,7 +151,7 @@ c	w=17.47d15*1.d-2*m
 2	continue
 
 *******************************END OF PROPAGATING COMPONENT OF THE RADIATIVE HEAT FLUX*******************************
-
+       STOP   
 
 *******************************EVANESCENT COMPONENT OF THE RADIATIVE HEAT FLUX - LOOP 1******************************
 

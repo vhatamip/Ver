@@ -47,7 +47,7 @@
 *    Reflectivity of the film: for analytical expressions of Drevillon
 	complex*16 RTE,RTM
 *    Film reflection coefficients for analytical expression of LDOS within the cavity formed by 2 films
-	complex*16 RTM1,RTM3 ! films 1 and 3
+	complex*16 RTM1,RTM3, TTM1 ! films 1 and 3
 	complex*16 RTE1,RTE3 ! films 1 and 3
 *    Variables for different tests
 	complex*16 ATE2,TTM3,termTM
@@ -414,7 +414,7 @@
 
 1	continue
 	write(6,*) 'k_rho=',kx	
-	write(6,*) '1-Num-TE=',TeTM	
+	write(6,*) '1-Num-TM=',TeTM	
 
 *----Analytical expression of Drevillon et al. for a single emitting film
 !MF	RTE=(rfTE(0,1)+rfTE(1,2)*cdexp(2.d0*im*kz(1)*(zint(2)-zint(1))))
@@ -433,21 +433,51 @@
 !----Analytical formulation when looking at distance z above film 1 in cavity (see p. 47 of notes)
 !    The equation below is correct, and give the exact same result than when solving the problem
 !    with the pure numerical approach.
-	RTM1=(rfTM(0,1)+rfTM(1,2)*cdexp(2.d0*im*kz(1)*dt(1)))
+!!!                          Evanescent modes
+
+!      RTM1=(rfTM(0,1)+rfTM(1,2)*cdexp(2.d0*im*kz(1)*dt(1)))
+!     &/(1.d0+rfTM(0,1)*rfTM(1,2)*cdexp(2.d0*im*kz(1)*dt(1)))
+
+!	RTM3=(rfTM(3,4)+rfTM(4,5)*cdexp(2.d0*im*kz(4)*dt(4)))
+!     &/(1.d0+rfTM(3,4)*rfTM(4,5)*cdexp(2.d0*im*kz(4)*dt(4)))
+
+!	termTM=(cdabs(1.d0+RTM3*dexp(-2.d0*dimag(kz(2))*dt(3)))**2.d0)
+!     &-(2.d0*(cdabs(kz(2))**2.d0)
+!     &*dreal(RTM3)*(dexp(-2.d0*dimag(kz(2))*dt(3))))/(kx**2.d0)
+
+!	TeTM=(((1.d0/(2.d0*(pi**2.d0)*w))*(kx**2.d0))*(1.d0/cdabs(kz(2)))
+!     &*dimag(RTM1)*termTM*dexp(-2.d0*dimag(kz(2))*dt(2)))
+!     &/(cdabs(1.d0-RTM1*RTM3*cdexp(2.d0*im*kz(2)*(dt(2)+dt(3))))**2.d0)
+
+!!!                          Propagating modes	
+
+      RTM1=(rfTM(0,1)+rfTM(1,2)*cdexp(2.d0*im*kz(1)*dt(1)))
+     &/(1.d0+rfTM(0,1)*rfTM(1,2)*cdexp(2.d0*im*kz(1)*dt(1)))
+	
+	TTM1=((1.d0+rfTM(0,1))*(1.d0+rfTM(1,2))*cdexp(im*kz(1)*dt(1)))
      &/(1.d0+rfTM(0,1)*rfTM(1,2)*cdexp(2.d0*im*kz(1)*dt(1)))
 
 	RTM3=(rfTM(3,4)+rfTM(4,5)*cdexp(2.d0*im*kz(4)*dt(4)))
      &/(1.d0+rfTM(3,4)*rfTM(4,5)*cdexp(2.d0*im*kz(4)*dt(4)))
 
-	termTM=(cdabs(1.d0+RTM3*dexp(-2.d0*dimag(kz(2))*dt(3)))**2.d0)
-     &-(2.d0*(cdabs(kz(2))**2.d0)
-     &*dreal(RTM3)*(dexp(-2.d0*dimag(kz(2))*dt(3))))/(kx**2.d0)
+!	termTM=(cdabs(1.d0+RTM3*cdexp(2.d0*im*kz(2)*dt(3)))**2.d0)
+!     &-(2.d0*kz(2)**2.d0)
+!     &*dreal(RTM3*cdexp(2.d0*im*kz(2)*dt(3)))/(k_nu**2.d0)
 
-	TeTM=(((1.d0/(2.d0*(pi**2.d0)*w))*(kx**2.d0))*(1.d0/cdabs(kz(2)))
-     &*dimag(RTM1)*termTM*dexp(-2.d0*dimag(kz(2))*dt(2)))
-     &/(cdabs(1.d0-RTM1*RTM3*cdexp(2.d0*im*kz(2)*(dt(2)+dt(3))))**2.d0)
+!	TeTM=(((1.d0/(4.d0*(pi**2.d0)*w))*(k_nu**2.d0))*(1.d0/cdabs(kz(2)))
+!     &*termTM*(1.d0-cdabs(RTM1)**2-cdabs(TTM1)**2))
+!     &/(cdabs(1.d0-RTM1*RTM3*cdexp(2.d0*im*kz(2)*(dt(2)+dt(3))))**2.d0)
 
-	 
+      termTM=kx**2.d0*(cdabs(1.d0+RTM3*cdexp(2.d0*im*kz(2)*dt(3)))**2.d0
+     &)+(kz(2)**2.d0)
+     &*(1+cdabs(RTM3)**2)
+	
+	TeTM=(((1.d0/(4.d0*(pi**2.d0)*w))*(1.d0/cdabs(kz(2)))
+     &*termTM*(1.d0-cdabs(RTM1)**2-cdabs(TTM1)**2))
+     &/(cdabs(1.d0-RTM1*RTM3*cdexp(2.d0*im*kz(2)*(dt(2)+dt(3))))**2.d0))
+
+	
+	
 	write(6,*) '2-Ana-TM=',TeTM
 
 	!stop
